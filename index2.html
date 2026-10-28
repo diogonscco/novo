@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOW DO MILHÃO DO PAEBES</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-show {
+            font-family: 'Cinzel Decorative', cursive, sans-serif;
+        }
+
+        /* Gold glow animations */
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .gold-box-glow {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.15);
+        }
+
+        .blue-box-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.25), inset 0 0 10px rgba(59, 130, 246, 0.15);
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090d16;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d97706;
+            border-radius: 4px;
+        }
+
+        /* Option button transitions */
+        .option-btn {
+            transition: all 0.2s ease-in-out;
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateX(6px);
+            background-color: rgba(245, 158, 11, 0.15);
+            border-color: #f59e0b;
+        }
+
+        /* Confetti Canvas overlay */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-100 relative selection:bg-amber-500 selection:text-slate-950">
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Top Lights Bar (TV Studio Visual) -->
+    <div class="w-full bg-slate-950/80 border-b border-amber-500/30 backdrop-blur-md py-2 px-4 flex justify-between items-center z-10">
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-tv text-amber-400 text-xl animate-pulse"></i>
+            <span class="font-bold text-amber-400 tracking-wider text-sm md:text-base">ESTÚDIO PAEBES TV</span>
+        </div>
+        <div id="top-status-bar" class="hidden flex items-center gap-4 text-sm">
+            <div class="bg-slate-900 border border-amber-500/40 px-3 py-1 rounded-full flex items-center gap-2">
+                <span id="player-avatar-badge" class="text-xl">🌽</span>
+                <span id="player-name-badge" class="font-bold text-amber-300">Estudante</span>
+            </div>
+            <div class="bg-slate-900 border border-blue-500/40 px-3 py-1 rounded-full flex items-center gap-2">
+                <i class="fa-solid fa-stopwatch text-blue-400"></i>
+                <span id="game-timer" class="font-mono font-bold text-blue-300">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-grow flex items-center justify-center p-3 md:p-6 z-10">
+        
+        <!-- ==================== TELA 1: INICIAL ==================== -->
+        <section id="screen-start" class="w-full max-w-2xl bg-slate-900/90 border-2 border-amber-500/50 rounded-3xl p-6 md:p-10 gold-box-glow text-center relative overflow-hidden">
+            <!-- Studio Lights Backdrop Effect -->
+            <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10">
+                <div class="inline-block bg-amber-500/20 border border-amber-400/40 px-4 py-1 rounded-full text-amber-300 text-xs md:text-sm font-semibold tracking-widest uppercase mb-4">
+                    Edição Especial de Matemática
+                </div>
+
+                <h1 class="font-show text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-500 gold-glow mb-2 leading-tight">
+                    SHOW DO MILHÃO
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-400 tracking-wider mb-8">
+                    DO PAEBES
+                </h2>
+
+                <form id="start-form" class="space-y-6 max-w-md mx-auto text-left" onsubmit="startGame(event)">
+                    <!-- Name Input -->
+                    <div>
+                        <label for="student-name" class="block text-sm font-medium text-amber-200 mb-2">
+                            <i class="fa-solid fa-user-graduate mr-1"></i> Nome do Estudante:
+                        </label>
+                        <input type="text" id="student-name" required placeholder="Digite seu nome completo..."
+                            class="w-full bg-slate-950 border-2 border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 rounded-xl px-4 py-3 text-white placeholder-slate-500 outline-none transition">
+                    </div>
+
+                    <!-- Avatar Selection -->
+                    <div>
+                        <label class="block text-sm font-medium text-amber-200 mb-2">
+                            <i class="fa-solid fa-carrot mr-1"></i> Escolha seu Mascote Hortifrúti:
+                        </label>
+                        <div class="grid grid-cols-5 gap-2" id="avatar-selector">
+                            <!-- Options generated dynamically JS -->
+                        </div>
+                    </div>
+
+                    <!-- Start Button -->
+                    <button type="submit"
+                        class="w-full mt-8 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black text-xl md:text-2xl py-4 px-6 rounded-2xl shadow-lg shadow-amber-500/30 transform hover:-translate-y-1 active:translate-y-0 transition cursor-pointer flex items-center justify-center gap-3 border-2 border-yellow-200">
+                        <i class="fa-solid fa-play"></i>
+                        INICIAR JOGO
+                    </button>
+                </form>
+
+                <!-- Leaderboard Quick Button -->
+                <div class="mt-8 pt-6 border-t border-slate-800 flex justify-center">
+                    <button onclick="showLeaderboardScreen()" class="text-xs md:text-sm text-slate-400 hover:text-amber-300 transition flex items-center gap-2">
+                        <i class="fa-solid fa-trophy text-amber-400"></i> Ver Ranking de Pontuações
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TELA 2: QUIZ / PERGUNTAS ==================== -->
+        <section id="screen-quiz" class="hidden w-full max-w-5xl grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            
+            <!-- Left Side: Prize Ladder & Lifelines (Desktop) / Header (Mobile) -->
+            <div class="lg:col-span-1 bg-slate-900/90 border border-slate-800 rounded-2xl p-4 flex flex-col gap-4">
+                <div class="text-center pb-2 border-b border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold tracking-widest uppercase">Prêmio Atual</span>
+                    <div id="current-prize-display" class="text-xl font-black text-amber-400 gold-glow">R$ 1.000</div>
+                </div>
+
+                <!-- Prize Ladder -->
+                <div class="space-y-1 text-xs font-bold font-mono">
+                    <div id="ladder-10" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>10. R$ 1.000.000</span><i class="fa-solid fa-crown text-amber-400"></i></div>
+                    <div id="ladder-9" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>9. R$ 500.000</span></div>
+                    <div id="ladder-8" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>8. R$ 300.000</span></div>
+                    <div id="ladder-7" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>7. R$ 200.000</span></div>
+                    <div id="ladder-6" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>6. R$ 100.000</span></div>
+                    <div id="ladder-5" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>5. R$ 50.000</span></div>
+                    <div id="ladder-4" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>4. R$ 20.000</span></div>
+                    <div id="ladder-3" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>3. R$ 10.000</span></div>
+                    <div id="ladder-2" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-400"><span>2. R$ 5.000</span></div>
+                    <div id="ladder-1" class="ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-amber-400 bg-amber-500/20 border border-amber-500/50"><span>1. R$ 1.000</span></div>
+                </div>
+
+                <!-- Lifelines / Ajuda -->
+                <div class="pt-2 border-t border-slate-800">
+                    <span class="text-xs text-slate-400 font-semibold mb-2 block text-center">AJUDAS DISPONÍVEIS</span>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <button id="lifeline-skip" onclick="useLifeline('skip')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs flex flex-col items-center gap-1 transition">
+                            <i class="fa-solid fa-forward-step text-amber-400"></i>
+                            <span>Pular</span>
+                        </button>
+                        <button id="lifeline-fifty" onclick="useLifeline('fifty')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs flex flex-col items-center gap-1 transition">
+                            <i class="fa-solid fa-ban text-amber-400"></i>
+                            <span>Eliminar 2</span>
+                        </button>
+                        <button id="lifeline-hint" onclick="useLifeline('hint')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-lg p-2 text-xs flex flex-col items-center gap-1 transition">
+                            <i class="fa-solid fa-lightbulb text-amber-400"></i>
+                            <span>Dica</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Question Card -->
+            <div class="lg:col-span-3 bg-slate-900/90 border-2 border-amber-500/40 rounded-3xl p-5 md:p-8 gold-box-glow flex flex-col min-h-[520px] justify-between relative">
+                
+                <!-- Question Header -->
+                <div>
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                        <span id="question-number-badge" class="bg-blue-600/30 border border-blue-400/40 text-blue-300 font-bold text-xs md:text-sm px-3 py-1 rounded-full">
+                            PERGUNTA 1 DE 10
+                        </span>
+                        <span id="question-code-badge" class="font-mono text-xs text-slate-400">
+                            (M090203EX)
+                        </span>
+                    </div>
+
+                    <!-- Question Text -->
+                    <h3 id="question-text" class="text-base md:text-lg font-semibold text-slate-100 mb-4 leading-relaxed">
+                        Carregando pergunta...
+                    </h3>
+
+                    <!-- SVG Graphic Container -->
+                    <div id="graphic-container" class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 my-4 flex justify-center items-center min-h-[160px] max-h-[260px] overflow-hidden">
+                        <!-- SVG dynamically inserted -->
+                    </div>
+
+                    <!-- Hint Box (Hidden by default) -->
+                    <div id="hint-box" class="hidden bg-amber-950/40 border border-amber-500/40 rounded-xl p-3 mb-4 text-xs md:text-sm text-amber-200 flex items-start gap-2">
+                        <i class="fa-solid fa-lightbulb text-amber-400 mt-0.5"></i>
+                        <span id="hint-text">Dica do Mascote...</span>
+                    </div>
+                </div>
+
+                <!-- Answer Options -->
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 my-4">
+                    <!-- Dynamic Options -->
+                </div>
+
+                <!-- Footer: Navigation Arrow Button & Feedback -->
+                <div class="pt-4 border-t border-slate-800 flex justify-between items-center">
+                    <div id="feedback-message" class="text-sm font-bold min-h-[24px]">
+                        <!-- Correct/Incorrect alert text -->
+                    </div>
+
+                    <button id="next-btn" onclick="nextQuestion()" disabled
+                        class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black px-6 py-3 rounded-xl transition flex items-center gap-2 opacity-50 cursor-not-allowed shadow-md">
+                        <span>Avançar</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TELA 3: RESULTADO & RANKING ==================== -->
+        <section id="screen-result" class="hidden w-full max-w-3xl bg-slate-900/95 border-2 border-amber-500/60 rounded-3xl p-6 md:p-10 gold-box-glow text-center">
+            
+            <div id="result-header" class="mb-6">
+                <span id="result-emoji" class="text-6xl mb-2 block animate-bounce">🏆</span>
+                <h2 id="result-title" class="font-show text-3xl md:text-4xl font-black text-amber-400 gold-glow">
+                    PARABÉNS!
+                </h2>
+                <p id="result-subtitle" class="text-slate-300 text-sm md:text-base mt-1">
+                    Você completou o Show do Milhão do PAEBES!
+                </p>
+            </div>
+
+            <!-- Stats Summary -->
+            <div class="grid grid-cols-3 gap-3 my-6">
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3">
+                    <span class="text-xs text-slate-400 block">Acertos</span>
+                    <span id="final-score" class="text-2xl font-black text-emerald-400">10 / 10</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3">
+                    <span class="text-xs text-slate-400 block">Prêmio Final</span>
+                    <span id="final-prize" class="text-xl md:text-2xl font-black text-amber-400">R$ 1.000.000</span>
+                </div>
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl p-3">
+                    <span class="text-xs text-slate-400 block">Tempo Total</span>
+                    <span id="final-time" class="text-2xl font-black text-blue-400">02:15</span>
+                </div>
+            </div>
+
+            <!-- Ranking Leaderboard Section -->
+            <div class="mt-8 text-left">
+                <h3 class="text-lg font-bold text-amber-300 mb-3 flex items-center justify-between">
+                    <span><i class="fa-solid fa-trophy mr-2 text-amber-400"></i> Ranking Geral do PAEBES</span>
+                    <span class="text-xs text-slate-400 font-normal">Top Estudantes</span>
+                </h3>
+
+                <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden max-h-60 overflow-y-auto">
+                    <table class="w-full text-left text-xs md:text-sm">
+                        <thead class="bg-slate-900 text-slate-400 uppercase font-mono text-[10px] md:text-xs border-b border-slate-800">
+                            <tr>
+                                <th class="p-3 text-center">Pos</th>
+                                <th class="p-3">Estudante</th>
+                                <th class="p-3 text-center">Acertos</th>
+                                <th class="p-3 text-right">Prêmio</th>
+                                <th class="p-3 text-right">Tempo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body" class="divide-y divide-slate-800">
+                            <!-- Rows populated JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="resetGame()"
+                    class="bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-black py-3 px-8 rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    JOGAR NOVAMENTE
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 text-center text-xs text-slate-500 border-t border-slate-900 z-10">
+        SHOW DO MILHÃO DO PAEBES • Preparatório de Matemática para Estudantes
+    </footer>
+
+    <!-- GAME LOGIC SCRIPT -->
+    <script>
+        /* ==================== AVATARS & PRIZE VALUES ==================== */
+        const AVATARS = [
+            { id: 'milho', emoji: '🌽', name: 'Milho' },
+            { id: 'cenoura', emoji: '🥕', name: 'Cenoura' },
+            { id: 'feijao', emoji: '🫘', name: 'Feijão' },
+            { id: 'tomate', emoji: '🍅', name: 'Tomate' },
+            { id: 'alface', emoji: '🥬', name: 'Alface' }
+        ];
+
+        const PRIZES = [
+            "R$ 1.000",
+            "R$ 5.000",
+            "R$ 10.000",
+            "R$ 20.000",
+            "R$ 50.000",
+            "R$ 100.000",
+            "R$ 200.000",
+            "R$ 300.000",
+            "R$ 500.000",
+            "R$ 1.000.000"
+        ];
+
+        /* ==================== QUESTIONS DATASET ==================== */
+        const QUESTIONS = [
+            {
+                code: "M090203EX",
+                text: "Observe os quadriláteros abaixo. Por suas propriedades comuns, eles poderiam ser classificados como:",
+                options: [
+                    "losangos.",
+                    "paralelogramos.",
+                    "quadrados.",
+                    "retângulos."
+                ],
+                correct: 1, // B
+                hint: "Lembre-se: quadriláteros que possuem lados opostos paralelos são chamados de paralelogramos.",
+                svg: `
+                <svg viewBox="0 0 520 130" class="w-full h-auto max-h-48 stroke-slate-200 fill-none font-sans text-xs">
+                    <!-- Retângulo -->
+                    <g transform="translate(10, 20)">
+                        <rect x="0" y="10" width="110" height="60" stroke="#38bdf8" stroke-width="2.5" fill="#0f172a"/>
+                        <rect x="3" y="13" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="7" cy="17" r="1" fill="#38bdf8"/>
+                        <rect x="99" y="13" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="103" cy="17" r="1" fill="#38bdf8"/>
+                        <rect x="3" y="59" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="7" cy="63" r="1" fill="#38bdf8"/>
+                        <rect x="99" y="59" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="103" cy="63" r="1" fill="#38bdf8"/>
+                    </g>
+                    <!-- Quadrado -->
+                    <g transform="translate(145, 10)">
+                        <rect x="10" y="10" width="70" height="70" stroke="#38bdf8" stroke-width="2.5" fill="#0f172a"/>
+                        <rect x="13" y="13" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="17" cy="17" r="1" fill="#38bdf8"/>
+                        <rect x="69" y="13" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="73" cy="17" r="1" fill="#38bdf8"/>
+                        <rect x="13" y="69" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="17" cy="73" r="1" fill="#38bdf8"/>
+                        <rect x="69" y="69" width="8" height="8" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="73" cy="73" r="1" fill="#38bdf8"/>
+                    </g>
+                    <!-- Losango (com ângulos retos) -->
+                    <g transform="translate(265, 10)">
+                        <polygon points="50,5 95,50 50,95 5,50" stroke="#38bdf8" stroke-width="2.5" fill="#0f172a"/>
+                        <!-- Right angle markers -->
+                        <polygon points="50,13 56,19 50,25 44,19" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="50" cy="19" r="1" fill="#38bdf8"/>
+                        <polygon points="87,50 81,56 75,50 81,44" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="81" cy="50" r="1" fill="#38bdf8"/>
+                        <polygon points="50,87 44,81 50,75 56,81" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="50" cy="81" r="1" fill="#38bdf8"/>
+                        <polygon points="13,50 19,44 25,50 19,56" stroke="#38bdf8" stroke-width="1.5"/>
+                        <circle cx="19" cy="50" r="1" fill="#38bdf8"/>
+                    </g>
+                    <!-- Paralelogramo genérico -->
+                    <g transform="translate(390, 20)">
+                        <polygon points="30,10 120,10 90,70 0,70" stroke="#38bdf8" stroke-width="2.5" fill="#0f172a"/>
+                        <path d="M 20,70 A 15,15 0 0,0 25,60" stroke="#38bdf8" stroke-width="1.5"/>
+                        <path d="M 100,10 A 15,15 0 0,0 95,20" stroke="#38bdf8" stroke-width="1.5"/>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M080492I7",
+                text: "Vanessa irá encomendar um bolo de aniversário em uma confeitaria. Para realizar esse pedido, ela deverá escolher o formato redondo ou retangular, também, uma dentre 4 opções de recheio e uma dentre 4 opções de cobertura. Quantas opções de bolos de aniversário diferentes Vanessa pode escolher nesse pedido?",
+                options: [
+                    "32.",
+                    "18.",
+                    "16.",
+                    "10."
+                ],
+                correct: 0, // A
+                hint: "Use o Princípio Fundamental da Contagem: Multiplique o número de escolhas de formato × recheios × coberturas.",
+                svg: `
+                <svg viewBox="0 0 400 130" class="w-full h-auto max-h-48 text-amber-400">
+                    <g transform="translate(40, 20)" text-anchor="middle" font-weight="bold">
+                        <!-- Formatos -->
+                        <rect x="0" y="25" width="80" height="50" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="40" y="55" fill="#fbbf24" font-size="14">2 Formatos</text>
+                        <text x="95" y="55" fill="#f8fafc" font-size="20">×</text>
+                        
+                        <!-- Recheios -->
+                        <rect x="110" y="25" width="80" height="50" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="150" y="55" fill="#fbbf24" font-size="14">4 Recheios</text>
+                        <text x="205" y="55" fill="#f8fafc" font-size="20">×</text>
+                        
+                        <!-- Coberturas -->
+                        <rect x="220" y="25" width="90" height="50" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+                        <text x="265" y="55" fill="#fbbf24" font-size="14">4 Coberturas</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M090125C2",
+                text: "O desenho abaixo representa o botão principal da máquina de lavar de Luciana. Esse pino se movimenta no sentido horário de acordo com as etapas da lavagem. Um certo dia, Luciana colocou roupas para lavar na máquina e, após esse pino ter completado um giro de 90°, o processo de lavagem foi interrompido. Nesse momento, o pino central estava parado em qual etapa da lavagem?",
+                options: [
+                    "Enxágue.",
+                    "Molho longo + agitação.",
+                    "Molho + agitação.",
+                    "Molho curto + agitação."
+                ],
+                correct: 1, // B
+                hint: "Um giro de 90° no sentido horário corresponde a 1/4 de volta para a direita a partir do topo (FIM/INÍCIO).",
+                svg: `
+                <svg viewBox="0 0 360 260" class="w-full h-auto max-h-56">
+                    <g transform="translate(180, 130)" text-anchor="middle" font-family="sans-serif">
+                        <!-- Outer circle -->
+                        <circle r="90" fill="none" stroke="#64748b" stroke-width="3"/>
+                        <circle r="50" fill="#0f172a" stroke="#94a3b8" stroke-width="4"/>
+                        
+                        <!-- Knob pointer pointing UP initially -->
+                        <path d="M -8,-50 L 0,-82 L 8,-50 Z" fill="#38bdf8"/>
+                        
+                        <!-- Clockwise Direction Arrow -->
+                        <path d="M 20,-92 A 95,95 0 0,1 92,-20" fill="none" stroke="#f59e0b" stroke-width="4" marker-end="url(#arrow)"/>
+                        <text x="80" y="-60" fill="#fbbf24" font-size="10" font-weight="bold">Gire para a direita ➔</text>
+                        
+                        <!-- Labels around the dial -->
+                        <circle cx="0" cy="-90" r="4" fill="#f8fafc"/>
+                        <text x="0" y="-102" fill="#f8fafc" font-size="11" font-weight="bold">FIM/INÍCIO</text>
+                        
+                        <!-- 90 deg position (3 o'clock) -->
+                        <circle cx="90" cy="0" r="5" fill="#f59e0b"/>
+                        <text x="140" y="5" fill="#fbbf24" font-size="11" font-weight="bold">Molho longo + agitação</text>
+
+                        <!-- 135 deg -->
+                        <circle cx="63" cy="63" r="4" fill="#94a3b8"/>
+                        <text x="110" y="80" fill="#94a3b8" font-size="10">Molho + agitação</text>
+
+                        <!-- 180 deg (6 o'clock) -->
+                        <circle cx="0" cy="90" r="4" fill="#94a3b8"/>
+                        <text x="0" y="112" fill="#94a3b8" font-size="10">Molho curto + agitação</text>
+
+                        <!-- 225 deg -->
+                        <circle cx="-63" cy="63" r="4" fill="#94a3b8"/>
+                        <text x="-100" y="80" fill="#94a3b8" font-size="10">Agitação</text>
+
+                        <!-- 270 deg (9 o'clock) -->
+                        <circle cx="-90" cy="0" r="4" fill="#94a3b8"/>
+                        <text x="-120" y="5" fill="#94a3b8" font-size="10">Enxágue</text>
+
+                        <!-- 315 deg -->
+                        <circle cx="-63" cy="-63" r="4" fill="#94a3b8"/>
+                        <text x="-110" y="-70" fill="#94a3b8" font-size="10">Centrifugação</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M090781A9",
+                text: "Ao sacar 100 reais no caixa automático, Rosane recebeu 14 notas, algumas de 5 reais e outras de 10 reais. Chamando de x o número de notas de 10 reais que ela recebeu e de y o número de notas de 5 reais, que sistema de equações permite determinar o número de notas de cada tipo que Rosane recebeu?",
+                options: [
+                    "A) { x + y = 14 ; 10x + 5y = 100 }",
+                    "B) { x + y = 14 ; 5x + 10y = 100 }",
+                    "C) { x + y = 14 ; 10x + 5y = 14 }",
+                    "D) { x + y = 14 ; 5x + 10y = 14 }"
+                ],
+                correct: 0, // A
+                hint: "1ª Equação: Total de notas (x + y = 14). 2ª Equação: Valor total em dinheiro (10x + 5y = 100).",
+                svg: `
+                <svg viewBox="0 0 380 120" class="w-full h-auto max-h-40">
+                    <g transform="translate(30, 20)">
+                        <!-- Nota de 10 -->
+                        <rect x="0" y="10" width="130" height="65" rx="6" fill="#065f46" stroke="#10b981" stroke-width="2"/>
+                        <text x="65" y="48" fill="#a7f3d0" font-size="22" font-weight="bold" text-anchor="middle">R$ 10 (x)</text>
+
+                        <text x="160" y="50" fill="#f8fafc" font-size="24" font-weight="bold">+</text>
+
+                        <!-- Nota de 5 -->
+                        <rect x="190" y="10" width="130" height="65" rx="6" fill="#1e3a8a" stroke="#3b82f6" stroke-width="2"/>
+                        <text x="255" y="48" fill="#bfdbfe" font-size="22" font-weight="bold" text-anchor="middle">R$ 5 (y)</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M060652I7",
+                text: "Em uma promoção de um supermercado, Joana comprou 2 caixas de sabão em pó que têm o formato de paralelepípedo reto com dimensões internas de 14 cm × 4 cm × 10 cm. Considere que todo o volume interno dessas caixas foi preenchido com sabão em pó. Qual foi o volume total de sabão em pó, em cm³, que Joana comprou?",
+                options: [
+                    "56 cm³.",
+                    "132 cm³.",
+                    "720 cm³.",
+                    "1 120 cm³."
+                ],
+                correct: 3, // D
+                hint: "Volume de 1 caixa = 14 × 4 × 10 = 560 cm³. Atenção: Joana comprou 2 caixas (560 × 2).",
+                svg: `
+                <svg viewBox="0 0 380 140" class="w-full h-auto max-h-48">
+                    <g transform="translate(110, 15)" stroke="#38bdf8" stroke-width="2" fill="none">
+                        <!-- Front Face -->
+                        <rect x="0" y="30" width="130" height="70" fill="#0f172a"/>
+                        <!-- Back Face lines -->
+                        <path d="M 0,30 L 40,0 L 170,0 L 130,30" />
+                        <path d="M 170,0 L 170,70 L 130,100 L 130,30" />
+                        <!-- Dotted inner lines -->
+                        <path d="M 0,100 L 40,70 L 170,70" stroke-dasharray="4,4" stroke="#64748b"/>
+                        <path d="M 40,0 L 40,70" stroke-dasharray="4,4" stroke="#64748b"/>
+                    </g>
+                    <!-- Dimension Labels -->
+                    <text x="175" y="130" fill="#f8fafc" font-size="13" font-weight="bold" text-anchor="middle">14 cm</text>
+                    <text x="260" y="80" fill="#f8fafc" font-size="13" font-weight="bold">4 cm</text>
+                    <text x="290" y="55" fill="#f8fafc" font-size="13" font-weight="bold">10 cm</text>
+                </svg>`
+            },
+            {
+                code: "M073784I7",
+                text: "Um dos critérios utilizados no basquete americano para determinar a performance dos jogadores é a quantidade de pontos marcados em cada jogo. Stephen Curry obteve as seguintes pontuações nos seis primeiros jogos de abril de 2021: [36, 37, 41, 32, 38, 53]. Qual foi a média de pontos por jogo que Stephen Curry marcou nesses jogos?",
+                options: [
+                    "37,5.",
+                    "39,5.",
+                    "41,0.",
+                    "53,0."
+                ],
+                correct: 1, // B
+                hint: "Soma de todos os pontos = 36 + 37 + 41 + 32 + 38 + 53 = 237. Divida o total por 6 jogos.",
+                svg: `
+                <svg viewBox="0 0 420 120" class="w-full h-auto max-h-40">
+                    <!-- Placard Box -->
+                    <rect x="30" y="25" width="360" height="65" rx="12" fill="#020617" stroke="#f59e0b" stroke-width="2.5"/>
+                    <g font-family="monospace" font-size="20" font-weight="bold" fill="#fbbf24" text-anchor="middle">
+                        <text x="65" y="64">36</text>
+                        <text x="125" y="64">37</text>
+                        <text x="185" y="64">41</text>
+                        <text x="245" y="64">32</text>
+                        <text x="305" y="64">38</text>
+                        <text x="360" y="64">53</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M025116",
+                text: "Observe abaixo os pontos Q, R, S e T na reta numérica que está dividida em partes iguais. Qual é o ponto que melhor representa a localização do número √7 nessa reta?",
+                options: [
+                    "T.",
+                    "S.",
+                    "R.",
+                    "Q."
+                ],
+                correct: 2, // C (R)
+                hint: "Sabemos que √4 = 2 e √9 = 3. Portanto, √7 vale aproximadamente 2,65, ficando entre 2 e 3 (ponto R).",
+                svg: `
+                <svg viewBox="0 0 500 120" class="w-full h-auto max-h-40">
+                    <!-- Number line -->
+                    <path d="M 30,60 L 470,60" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)"/>
+                    
+                    <!-- Equal ticks -->
+                    <g stroke="#94a3b8" stroke-width="2" fill="none">
+                        <line x1="60" y1="50" x2="60" y2="70"/>
+                        <line x1="110" y1="50" x2="110" y2="70"/> <!-- 1 -->
+                        <line x1="160" y1="50" x2="160" y2="70"/>
+                        <line x1="210" y1="50" x2="210" y2="70"/> <!-- Q = 2 -->
+                        <line x1="260" y1="50" x2="260" y2="70"/> <!-- R = ~2.65 -->
+                        <line x1="310" y1="50" x2="310" y2="70"/> <!-- S = 3 -->
+                        <line x1="360" y1="50" x2="360" y2="70"/>
+                        <line x1="410" y1="50" x2="410" y2="70"/> <!-- 5 -->
+                        <line x1="450" y1="50" x2="450" y2="70"/> <!-- T -->
+                    </g>
+
+                    <!-- Labels -->
+                    <g font-size="14" font-weight="bold" text-anchor="middle" fill="#f8fafc">
+                        <text x="110" y="90">1</text>
+                        <circle cx="210" cy="60" r="5" fill="#38bdf8"/>
+                        <text x="210" y="40" fill="#38bdf8">Q</text>
+
+                        <circle cx="260" cy="60" r="5" fill="#f59e0b"/>
+                        <text x="260" y="40" fill="#fbbf24">R</text>
+
+                        <circle cx="310" cy="60" r="5" fill="#38bdf8"/>
+                        <text x="310" y="40" fill="#38bdf8">S</text>
+
+                        <text x="410" y="90">5</text>
+
+                        <circle cx="450" cy="60" r="5" fill="#38bdf8"/>
+                        <text x="450" y="40" fill="#38bdf8">T</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M091017H6",
+                text: "Márcio irá separar com uma cerca uma parte de seu quintal para criar uma horta dividida em duas partes. Observe no projeto abaixo as medidas. De acordo com esse projeto, qual será a medida do comprimento total, em metros, da cerca dessa horta?",
+                options: [
+                    "7,00 m.",
+                    "5,50 m.",
+                    "5,25 m.",
+                    "4,00 m."
+                ],
+                correct: 2, // C
+                hint: "Use semelhança de triângulos retângulos: Cerca / 3,5 m = 3 m / 2 m  =>  Cerca = (3,5 × 3) / 2 = 5,25 m.",
+                svg: `
+                <svg viewBox="0 0 380 180" class="w-full h-auto max-h-52">
+                    <g stroke="#38bdf8" stroke-width="2.5" fill="none">
+                        <!-- Big Triangle -->
+                        <polygon points="40,20 40,140 280,140" stroke="#38bdf8"/>
+                        <!-- Inner Divider line -->
+                        <line x1="140" y1="71" x2="140" y2="140" stroke="#38bdf8"/>
+                        
+                        <!-- Right angle markers -->
+                        <rect x="40" y="125" width="15" height="15"/>
+                        <circle cx="47" cy="132" r="1.5" fill="#38bdf8"/>
+                        <rect x="140" y="125" width="15" height="15"/>
+                        <circle cx="147" cy="132" r="1.5" fill="#38bdf8"/>
+                    </g>
+                    <!-- Text Labels -->
+                    <g font-size="12" font-weight="bold" fill="#f8fafc" text-anchor="middle">
+                        <text x="90" y="160">1,5 m</text>
+                        <text x="210" y="160">2 m</text>
+                        <text x="225" y="100" transform="rotate(-26, 225, 100)" fill="#fbbf24">3 m</text>
+                        <text x="140" y="30" transform="rotate(-26, 140, 30)" fill="#38bdf8">Comprimento da cerca</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M080110I7",
+                text: "Uma fábrica produzia 1 500 peças de roupas por dia. Após uma reestruturação, a quantidade de peças de roupas que ela passou a produzir, por dia, teve um acréscimo de 25%. Quantas peças de roupas essa fábrica passou a produzir, por dia, após essa reestruturação?",
+                options: [
+                    "1 125.",
+                    "1 525.",
+                    "1 875.",
+                    "5 250."
+                ],
+                correct: 2, // C
+                hint: "Calcule 25% de 1 500 (1500 × 0,25 = 375). Em seguida, some a produção inicial: 1 500 + 375 = 1 875.",
+                svg: `
+                <svg viewBox="0 0 380 120" class="w-full h-auto max-h-40">
+                    <g transform="translate(40, 25)" font-weight="bold">
+                        <rect x="0" y="0" width="130" height="60" rx="10" fill="#1e293b" stroke="#64748b" stroke-width="2"/>
+                        <text x="65" y="35" fill="#f8fafc" font-size="16" text-anchor="middle">1 500 peças</text>
+                        
+                        <text x="160" y="38" fill="#10b981" font-size="24" text-anchor="middle">+</text>
+                        
+                        <rect x="180" y="0" width="120" height="60" rx="10" fill="#064e3b" stroke="#10b981" stroke-width="2"/>
+                        <text x="240" y="35" fill="#34d399" font-size="18" text-anchor="middle">+ 25%</text>
+                    </g>
+                </svg>`
+            },
+            {
+                code: "M051497I7",
+                text: "Júlia e Luciana colecionam figurinhas. Certo dia, Júlia comprou 443 figurinhas para sua coleção, enquanto Luciana comprou apenas 162. Quantas figurinhas Júlia comprou a mais que Luciana nesse dia?",
+                options: [
+                    "281.",
+                    "381.",
+                    "443.",
+                    "605."
+                ],
+                correct: 0, // A
+                hint: "Subtraia a quantidade de figurinhas de Luciana do valor de Júlia: 443 - 162.",
+                svg: `
+                <svg viewBox="0 0 380 120" class="w-full h-auto max-h-40">
+                    <g transform="translate(30, 20)" font-weight="bold" text-anchor="middle">
+                        <rect x="10" y="10" width="120" height="60" rx="8" fill="#1e1b4b" stroke="#6366f1" stroke-width="2"/>
+                        <text x="70" y="38" fill="#c7d2fe" font-size="13">JÚLIA</text>
+                        <text x="70" y="56" fill="#f8fafc" font-size="18">443</text>
+
+                        <text x="160" y="45" fill="#f8fafc" font-size="22">-</text>
+
+                        <rect x="190" y="10" width="120" height="60" rx="8" fill="#312e81" stroke="#818cf8" stroke-width="2"/>
+                        <text x="250" y="38" fill="#c7d2fe" font-size="13">LUCIANA</text>
+                        <text x="250" y="56" fill="#f8fafc" font-size="18">162</text>
+                    </g>
+                </svg>`
+            }
+        ];
+
+        /* ==================== STATE MANAGEMENT ==================== */
+        let gameState = {
+            playerName: '',
+            playerAvatar: AVATARS[0],
+            currentQuestionIndex: 0,
+            selectedOption: null,
+            score: 0,
+            prize: 'R$ 0',
+            timerInterval: null,
+            secondsElapsed: 0,
+            lifelinesUsed: {
+                skip: false,
+                fifty: false,
+                hint: false
+            }
+        };
+
+        /* ==================== WEB AUDIO API (SOUND EFFECTS) ==================== */
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+        }
+
+        function playSound(type) {
+            if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+                osc.start(now);
+                osc.stop(now + 0.05);
+            } else if (type === 'correct') {
+                // Success Arpeggio
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const noteOsc = audioCtx.createOscillator();
+                    const noteGain = audioCtx.createGain();
+                    noteOsc.connect(noteGain);
+                    noteGain.connect(audioCtx.destination);
+                    noteOsc.frequency.setValueAtTime(freq, now + idx * 0.08);
+                    noteGain.gain.setValueAtTime(0.2, now + idx * 0.08);
+                    noteGain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+                    noteOsc.start(now + idx * 0.08);
+                    noteOsc.stop(now + idx * 0.08 + 0.2);
+                });
+            } else if (type === 'error') {
+                // Low Buzz
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.linearRampToValueAtTime(90, now + 0.3);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+        }
+
+        /* ==================== INIT & DOM LOAD ==================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAvatarSelector();
+        });
+
+        function renderAvatarSelector() {
+            const container = document.getElementById('avatar-selector');
+            container.innerHTML = AVATARS.map((av, idx) => `
+                <button type="button" onclick="selectAvatar('${av.id}')" id="avatar-btn-${av.id}"
+                    class="avatar-option flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition ${idx === 0 ? 'border-amber-400 bg-amber-500/20' : 'border-slate-800 bg-slate-950 hover:border-slate-600'}">
+                    <span class="text-3xl mb-1">${av.emoji}</span>
+                    <span class="text-[10px] font-bold text-slate-300">${av.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function selectAvatar(id) {
+            initAudio();
+            playSound('click');
+            const found = AVATARS.find(a => a.id === id);
+            if (found) {
+                gameState.playerAvatar = found;
+                document.querySelectorAll('.avatar-option').forEach(el => {
+                    el.classList.remove('border-amber-400', 'bg-amber-500/20');
+                    el.classList.add('border-slate-800', 'bg-slate-950');
+                });
+                const selectedBtn = document.getElementById(`avatar-btn-${id}`);
+                selectedBtn.classList.remove('border-slate-800', 'bg-slate-950');
+                selectedBtn.classList.add('border-amber-400', 'bg-amber-500/20');
+            }
+        }
+
+        /* ==================== GAME FLOW ==================== */
+        function startGame(e) {
+            e.preventDefault();
+            initAudio();
+            playSound('click');
+
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) return;
+
+            gameState.playerName = nameInput;
+            gameState.currentQuestionIndex = 0;
+            gameState.score = 0;
+            gameState.prize = 'R$ 0';
+            gameState.secondsElapsed = 0;
+            gameState.lifelinesUsed = { skip: false, fifty: false, hint: false };
+
+            // Reset Lifelines UI
+            ['skip', 'fifty', 'hint'].forEach(key => {
+                const btn = document.getElementById(`lifeline-${key}`);
+                btn.disabled = false;
+                btn.classList.remove('opacity-40', 'cursor-not-allowed');
+            });
+
+            // Update Top Bar Badges
+            document.getElementById('player-name-badge').textContent = gameState.playerName;
+            document.getElementById('player-avatar-badge').textContent = gameState.playerAvatar.emoji;
+            document.getElementById('top-status-bar').classList.remove('hidden');
+
+            // Switch Screens
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+
+            // Start Timer
+            startTimer();
+
+            // Load First Question
+            loadQuestion(0);
+        }
+
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            gameState.secondsElapsed = 0;
+            updateTimerDisplay();
+            gameState.timerInterval = setInterval(() => {
+                gameState.secondsElapsed++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(gameState.secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (gameState.secondsElapsed % 60).toString().padStart(2, '0');
+            document.getElementById('game-timer').textContent = `${mins}:${secs}`;
+        }
+
+        /* ==================== QUIZ ENGINE ==================== */
+        function loadQuestion(index) {
+            gameState.selectedOption = null;
+            const q = QUESTIONS[index];
+
+            // Reset Next button & Feedback
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.disabled = true;
+            nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            document.getElementById('feedback-message').innerHTML = '';
+
+            // Hide Hint Box
+            document.getElementById('hint-box').classList.add('hidden');
+
+            // Header info
+            document.getElementById('question-number-badge').textContent = `PERGUNTA ${index + 1} DE 10`;
+            document.getElementById('question-code-badge').textContent = `(${q.code})`;
+            document.getElementById('question-text').textContent = q.text;
+
+            // Render Graphic SVG
+            document.getElementById('graphic-container').innerHTML = q.svg;
+
+            // Render Options
+            const container = document.getElementById('options-container');
+            const letters = ['A', 'B', 'C', 'D'];
+            container.innerHTML = q.options.map((opt, i) => `
+                <button onclick="selectOption(${i})" id="opt-btn-${i}"
+                    class="option-btn bg-slate-950 border-2 border-slate-800 rounded-2xl p-4 text-left flex items-center gap-3 w-full text-sm md:text-base font-medium">
+                    <span class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-amber-400 shrink-0">
+                        ${letters[i]}
+                    </span>
+                    <span class="text-slate-200">${opt}</span>
+                </button>
+            `).join('');
+
+            // Update Ladder Highlight
+            updateLadderUI(index);
+        }
+
+        function updateLadderUI(index) {
+            for (let i = 1; i <= 10; i++) {
+                const el = document.getElementById(`ladder-${i}`);
+                if (i === index + 1) {
+                    el.className = 'ladder-step flex justify-between p-1.5 rounded text-amber-300 font-bold bg-amber-500/20 border border-amber-500/60 gold-glow';
+                } else if (i <= index) {
+                    el.className = 'ladder-step flex justify-between p-1.5 rounded text-emerald-400 bg-emerald-950/30 border border-emerald-800/40';
+                } else {
+                    el.className = 'ladder-step flex justify-between p-1.5 rounded bg-slate-950/60 text-slate-500';
+                }
+            }
+            document.getElementById('current-prize-display').textContent = PRIZES[index];
+        }
+
+        function selectOption(index) {
+            playSound('click');
+            gameState.selectedOption = index;
+
+            // Highlight selected button style
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-btn-${i}`);
+                if (btn) {
+                    btn.classList.remove('border-amber-400', 'bg-amber-500/20');
+                    btn.classList.add('border-slate-800', 'bg-slate-950');
+                }
+            }
+
+            const selectedBtn = document.getElementById(`opt-btn-${index}`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('border-slate-800', 'bg-slate-950');
+                selectedBtn.classList.add('border-amber-400', 'bg-amber-500/20');
+            }
+
+            // Enable Next Button
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function nextQuestion() {
+            if (gameState.selectedOption === null) return;
+
+            const q = QUESTIONS[gameState.currentQuestionIndex];
+            const isCorrect = gameState.selectedOption === q.correct;
+
+            // Reveal feedback
+            const feedbackEl = document.getElementById('feedback-message');
+            const selectedBtn = document.getElementById(`opt-btn-${gameState.selectedOption}`);
+            const correctBtn = document.getElementById(`opt-btn-${q.correct}`);
+
+            // Disable all option buttons
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`opt-btn-${i}`);
+                if (btn) btn.disabled = true;
+            }
+
+            if (isCorrect) {
+                playSound('correct');
+                gameState.score++;
+                gameState.prize = PRIZES[gameState.currentQuestionIndex];
+
+                selectedBtn.classList.remove('border-amber-400', 'bg-amber-500/20');
+                selectedBtn.classList.add('border-emerald-500', 'bg-emerald-500/20', 'text-emerald-300');
+                feedbackEl.innerHTML = `<span class="text-emerald-400 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Resposta Correta! +${PRIZES[gameState.currentQuestionIndex]}</span>`;
+            } else {
+                playSound('error');
+                selectedBtn.classList.remove('border-amber-400', 'bg-amber-500/20');
+                selectedBtn.classList.add('border-rose-500', 'bg-rose-500/20', 'text-rose-300');
+
+                correctBtn.classList.add('border-emerald-500', 'bg-emerald-500/20');
+                feedbackEl.innerHTML = `<span class="text-rose-400 flex items-center gap-1"><i class="fa-solid fa-circle-xmark"></i> Incorreto! A resposta certa era a alternativa ${['A','B','C','D'][q.correct]}.</span>`;
+            }
+
+            // Disable next button temporarily to let user digest feedback
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.disabled = true;
+
+            setTimeout(() => {
+                gameState.currentQuestionIndex++;
+                if (gameState.currentQuestionIndex < QUESTIONS.length) {
+                    loadQuestion(gameState.currentQuestionIndex);
+                } else {
+                    finishGame();
+                }
+            }, 1800);
+        }
+
+        /* ==================== LIFELINES ==================== */
+        function useLifeline(type) {
+            if (gameState.lifelinesUsed[type]) return;
+            playSound('click');
+            gameState.lifelinesUsed[type] = true;
+
+            const btn = document.getElementById(`lifeline-${type}`);
+            btn.disabled = true;
+            btn.classList.add('opacity-40', 'cursor-not-allowed');
+
+            const q = QUESTIONS[gameState.currentQuestionIndex];
+
+            if (type === 'skip') {
+                // Skip to next question without losing/winning point
+                gameState.currentQuestionIndex++;
+                if (gameState.currentQuestionIndex < QUESTIONS.length) {
+                    loadQuestion(gameState.currentQuestionIndex);
+                } else {
+                    finishGame();
+                }
+            } else if (type === 'fifty') {
+                // Eliminate 2 wrong options
+                let wrongIndices = [0, 1, 2, 3].filter(i => i !== q.correct);
+                // Shuffle and pick 2 to hide
+                wrongIndices.sort(() => Math.random() - 0.5);
+                const toHide = wrongIndices.slice(0, 2);
+
+                toHide.forEach(idx => {
+                    const optBtn = document.getElementById(`opt-btn-${idx}`);
+                    if (optBtn) {
+                        optBtn.style.visibility = 'hidden';
+                    }
+                });
+            } else if (type === 'hint') {
+                // Show hint box
+                const hintBox = document.getElementById('hint-box');
+                document.getElementById('hint-text').textContent = q.hint;
+                hintBox.classList.remove('hidden');
+            }
+        }
+
+        /* ==================== END GAME & LEADERBOARD ==================== */
+        function finishGame() {
+            clearInterval(gameState.timerInterval);
+
+            // Hide Quiz Screen, Show Result Screen
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+
+            const mins = Math.floor(gameState.secondsElapsed / 60).toString().padStart(2, '0');
+            const secs = (gameState.secondsElapsed % 60).toString().padStart(2, '0');
+            const timeFormatted = `${mins}:${secs}`;
+
+            document.getElementById('final-score').textContent = `${gameState.score} / 10`;
+            document.getElementById('final-prize').textContent = gameState.score > 0 ? gameState.prize : 'R$ 0';
+            document.getElementById('final-time').textContent = timeFormatted;
+
+            // Trigger Confetti if high score
+            if (gameState.score >= 7) {
+                triggerConfetti();
+                document.getElementById('result-title').textContent = "PARABÉNS!";
+                document.getElementById('result-subtitle').textContent = "Excelente desempenho no Show do Milhão PAEBES!";
+            } else {
+                document.getElementById('result-title').textContent = "BOM TRABALHO!";
+                document.getElementById('result-subtitle').textContent = "Continue praticando para alcançar a pontuação máxima!";
+            }
+
+            // Save to LocalStorage Leaderboard
+            saveToLeaderboard({
+                name: gameState.playerName,
+                avatar: gameState.playerAvatar.emoji,
+                score: gameState.score,
+                prize: gameState.score > 0 ? gameState.prize : 'R$ 0',
+                seconds: gameState.secondsElapsed,
+                time: timeFormatted,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+
+            // Render Leaderboard Table
+            renderLeaderboard();
+        }
+
+        function saveToLeaderboard(entry) {
+            let leaderboard = JSON.parse(localStorage.getItem('paebes_milhao_ranking') || '[]');
+            leaderboard.push(entry);
+            // Sort by score desc, then time asc
+            leaderboard.sort((a, b) => b.score - a.score || a.seconds - b.seconds);
+            // Keep top 15
+            leaderboard = leaderboard.slice(0, 15);
+            localStorage.setItem('paebes_milhao_ranking', JSON.stringify(leaderboard));
+        }
+
+        function renderLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('paebes_milhao_ranking') || '[]');
+            const tbody = document.getElementById('leaderboard-body');
+
+            if (leaderboard.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Nenhum resultado registrado ainda.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = leaderboard.map((item, idx) => {
+                let badge = `${idx + 1}º`;
+                if (idx === 0) badge = '🥇';
+                if (idx === 1) badge = '🥈';
+                if (idx === 2) badge = '🥉';
+
+                return `
+                    <tr class="${item.name === gameState.playerName ? 'bg-amber-500/10 text-amber-200' : 'hover:bg-slate-900'}">
+                        <td class="p-3 text-center font-bold">${badge}</td>
+                        <td class="p-3 font-semibold flex items-center gap-2">
+                            <span>${item.avatar}</span>
+                            <span class="truncate max-w-[120px] md:max-w-none">${item.name}</span>
+                        </td>
+                        <td class="p-3 text-center font-mono font-bold text-emerald-400">${item.score}/10</td>
+                        <td class="p-3 text-right font-mono text-amber-400">${item.prize}</td>
+                        <td class="p-3 text-right font-mono text-slate-400">${item.time}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function showLeaderboardScreen() {
+            initAudio();
+            playSound('click');
+            document.getElementById('screen-start').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            renderLeaderboard();
+        }
+
+        function resetGame() {
+            initAudio();
+            playSound('click');
+            clearInterval(gameState.timerInterval);
+            document.getElementById('screen-result').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-start').classList.remove('hidden');
+            document.getElementById('top-status-bar').classList.add('hidden');
+        }
+
+        /* ==================== CONFETTI ANIMATION ==================== */
+        function triggerConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speedY: Math.random() * 3 + 2,
+                    speedX: Math.random() * 2 - 1,
+                    rotation: Math.random() * 360
+                });
+            }
+
+            let animationFrame;
+            function render() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    p.rotation += 2;
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate((p.rotation * Math.PI) / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                if (particles.some(p => p.y < canvas.height)) {
+                    animationFrame = requestAnimationFrame(render);
+                } else {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    cancelAnimationFrame(animationFrame);
+                }
+            }
+            render();
+        }
+    </script>
+</body>
+</html>
